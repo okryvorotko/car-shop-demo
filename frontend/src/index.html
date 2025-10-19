@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Car Shop Demo App</title>
+</head>
+<body>
+<h1 id="app-title">Car Shop Demo App</h1>
+<p>Backend Health Check: <span id="backend-status">Checking...</span></p>
+
+<script>
+	fetch('http://localhost:4000/ping').then(res => res.json()).then(data => {
+		document.getElementById('backend-status').textContent = data.message;
+	}).catch(() => {
+		document.getElementById('backend-status').textContent = 'Offline';
+	});
+</script>
+</body>
+</html>
