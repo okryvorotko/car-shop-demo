@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const BE_HOST = import.meta.env.VITE_BE_HOST;
+
 export default function Register() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -7,7 +9,7 @@ export default function Register() {
 	
 	async function handleRegister(e) {
 		e.preventDefault();
-		const res = await fetch("http://localhost:3000/auth/register", {
+		const res = await fetch(`${BE_HOST}auth/register`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, password }),
@@ -19,11 +21,11 @@ export default function Register() {
 	
 	return (
 		<form onSubmit={handleRegister} className="p-4 flex flex-col gap-2">
-			<h2>Register</h2>
-			<input placeholder="Username" value={username} onChange={e=>setUsername(e.target.value)} />
-			<input placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-			<button type="submit">Register</button>
-			<p>{msg}</p>
+			<h2 id="r_header">Register</h2>
+			<input placeholder="Username" id="r_username" value={username} onChange={e=>setUsername(e.target.value)} />
+			<input placeholder="Password" id="r_password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+			<button type="submit" id="r_register">Register</button>
+			<p id="r_msg">{msg}</p>
 		</form>
 	);
 }

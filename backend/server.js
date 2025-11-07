@@ -13,8 +13,8 @@ app.get("/ping", (req, res) => {
 	res.json({ message: "pong" });
 });
 
-const PORT = process.env.PORT || 4000;
-const SECRET = "supersecretkey"; // later use env var
+const BE_PORT = process.env.BE_PORT;
+const SECRET = process.env.JWT_SECRET;
 const db = await open({ filename: "./db.sqlite", driver: sqlite3.Database });
 
 // --- Initialize users table ---
@@ -79,4 +79,4 @@ app.get("/me", auth, async (req, res) => {
 	res.json(user);
 });
 
-app.listen(PORT, () => console.log(`🚗 Backend running on port ${PORT}`));
+app.listen(BE_PORT, () => console.log(`🚗 Backend running on port ${BE_PORT}`));

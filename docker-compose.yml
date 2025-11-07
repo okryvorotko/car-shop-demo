@@ -6,13 +6,18 @@ services:
       - "4000:4000"
     environment:
       - NODE_ENV=development
+    env_file:
+      - ./backend/.env
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "3000:5173"
     depends_on:
       - backend
+    env_file:
+      - ./frontend/.env
+
 
   db:
     image: postgres:16

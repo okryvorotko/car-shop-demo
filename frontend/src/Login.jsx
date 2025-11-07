@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const BE_HOST = import.meta.env.VITE_BE_HOST;
+
 export default function Login() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -7,7 +9,7 @@ export default function Login() {
 	
 	async function handleLogin(e) {
 		e.preventDefault();
-		const res = await fetch("http://localhost:3000/auth/login", {
+		const res = await fetch(`${BE_HOST}auth/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, password }),
@@ -21,11 +23,11 @@ export default function Login() {
 	
 	return (
 		<form onSubmit={handleLogin} className="p-4 flex flex-col gap-2">
-			<h2>Login</h2>
-			<input placeholder="Username" value={username} onChange={e=>setUsername(e.target.value)} />
-			<input placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-			<button type="submit">Login</button>
-			<p>{msg}</p>
+			<h2 id="l_header">Login</h2>
+			<input placeholder="Username" id="l_username" value={username} onChange={e=>setUsername(e.target.value)} />
+			<input placeholder="Password" id="l_username" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+			<button type="submit" id="l_submit">Login</button>
+			<p id="l_msg">{msg}</p>
 		</form>
 	);
 }
