@@ -8,6 +8,10 @@ services:
       - NODE_ENV=development
     env_file:
       - ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # prevent overwriting node_modules with host empty folder
+    command: npm run dev  # use nodemon for backend auto-reload
 
   frontend:
     build: ./frontend
@@ -17,7 +21,10 @@ services:
       - backend
     env_file:
       - ./frontend/.env
-
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev  # use vite dev server
 
   db:
     image: postgres:16
