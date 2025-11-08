@@ -1,30 +1,39 @@
-import { useEffect, useState } from "react";
-import Login from "./Login";
-import Register from "./Register";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Welcome from "./pages/Welcome";
+import { checkAuth } from "./api";
 
-const BE_HOST = import.meta.env.VITE_BE_HOST;
-
-export default function App() {
+function App() {
 	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 	
 	useEffect(() => {
 		const token = localStorage.getItem("token");
 		if (token) {
-			fetch(`${BE_HOST}me`, {
-				headers: { Authorization: "Bearer " + token },
-			})
-			.then(res => res.json())
-			.then(data => setUser(data));
+			checkAuth(token)
+			.then((u) => setUser(u))
+			.catch(() => localStorage.removeItem("token"))
+			.finally(() => setLoading(false));
+		} else {
+			setLoading(false);
 		}
 	}, []);
 	
-	if (!user)
-		return (
-			<div>
-				<Register />
-				<Login />
-			</div>
-		);
+	if (loading) return <div>Loading...</div>;
 	
-	return <h1 id="welcome_lbl">Welcome, {user.username}!</h1>;
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Home user={user} />} />
+				<Route path="/register" element={<Register />} />
+				<Route path="/login" element={<Login setUser={setUser} />} />
+				<Route path="/welcome" element={user ? <Welcome user={user} /> : <Navigate to="/" />} />
+			</Routes>
+		</Router>
+	);
 }
+
+export default App;
