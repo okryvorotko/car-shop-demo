@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchCar } from "../api";
 import AccountMenu from "../components/AccountMenu";
+import CartLink from "../components/CartLink";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -9,8 +10,9 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 	maximumFractionDigits: 0,
 });
 
-export default function CarDetails({ user, setUser }) {
+export default function CarDetails({ user, setUser, cartCount }) {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const [car, setCar] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -48,6 +50,10 @@ export default function CarDetails({ user, setUser }) {
 		};
 	}, [id]);
 
+	function handleAddToCart() {
+		navigate(`/cart/add/${id}`);
+	}
+
 	return (
 		<main id="car-details-page" data-testid="car-details-page" className="car-details-page">
 			<header
@@ -64,6 +70,7 @@ export default function CarDetails({ user, setUser }) {
 					<Link id="car-details-back-link" data-testid="car-details-back-link" to="/cars">
 						Back to cars
 					</Link>
+					<CartLink count={cartCount} />
 					<AccountMenu user={user} setUser={setUser} />
 				</div>
 			</header>
@@ -169,8 +176,10 @@ export default function CarDetails({ user, setUser }) {
 							data-testid={`car-details-add-to-cart-${car.id}`}
 							type="button"
 							className="car-details-add-to-cart"
+							disabled={!car.available}
+							onClick={handleAddToCart}
 						>
-							Add to Cart
+							{car.available ? "Add to Cart" : "Unavailable"}
 						</button>
 					</div>
 				</section>

@@ -76,7 +76,7 @@ app.get("/me", auth, async (req, res) => {
 app.get("/cars", auth, async (req, res) => {
 	const { model, minRange, maxRange, minPrice, maxPrice, range, price } =
 		req.query;
-	const filters = [];
+	const filters = ["available = 1"];
 	const params = [];
 
 	if (model) {
@@ -114,7 +114,8 @@ app.get("/cars", auth, async (req, res) => {
 				year,
 				range_miles AS rangeMiles,
 				price,
-				image_url AS imageUrl
+				image_url AS imageUrl,
+				available
 			FROM cars
 			${where}
 			ORDER BY price ASC
@@ -141,7 +142,8 @@ app.get("/cars/:id", auth, async (req, res) => {
 				year,
 				range_miles AS rangeMiles,
 				price,
-				image_url AS imageUrl
+				image_url AS imageUrl,
+				available
 			FROM cars
 			WHERE id = ?
 		`,
@@ -153,6 +155,132 @@ app.get("/cars/:id", auth, async (req, res) => {
 	}
 
 	res.json(car);
+});
+
+app.get("/cart", auth, async (req, res) => {
+	const cars = await db.all(
+		`
+			SELECT
+				c.id,
+				c.model,
+				c.make,
+				c.year,
+				c.range_miles AS rangeMiles,
+				c.price,
+				c.image_url AS imageUrl,
+				c.available
+			FROM cart_items ci
+			JOIN cars c ON c.id = ci.car_id
+			WHERE ci.user_id = ? AND c.available = 1
+			ORDER BY ci.created_at DESC
+		`,
+		[req.user.id]
+	);
+
+	res.json(cars);
+});
+
+app.get("/cart/count", auth, async (req, res) => {
+	const result = await db.get(
+		`
+			SELECT COUNT(*) AS count
+			FROM cart_items ci
+			JOIN cars c ON c.id = ci.car_id
+			WHERE ci.user_id = ? AND c.available = 1
+		`,
+		[req.user.id]
+	);
+
+	res.json({ count: result.count });
+});
+
+app.post("/cart/add/:id", auth, async (req, res) => {
+	const carId = Number(req.params.id);
+
+	if (!Number.isInteger(carId) || carId < 1) {
+		return res.status(400).json({ error: "Invalid car id" });
+	}
+
+	const car = await db.get("SELECT id, available FROM cars WHERE id = ?", [carId]);
+
+	if (!car) {
+		return res.status(404).json({ error: "Car not found" });
+	}
+
+	if (!car.available) {
+		return res.status(409).json({ error: "Car is no longer available" });
+	}
+
+	await db.run(
+		"INSERT OR IGNORE INTO cart_items (user_id, car_id) VALUES (?, ?)",
+		[req.user.id, carId]
+	);
+
+	const count = await db.get(
+		`
+			SELECT COUNT(*) AS count
+			FROM cart_items ci
+			JOIN cars c ON c.id = ci.car_id
+			WHERE ci.user_id = ? AND c.available = 1
+		`,
+		[req.user.id]
+	);
+
+	res.json({ ok: true, count: count.count });
+});
+
+app.post("/order", auth, async (req, res) => {
+	const cartCars = await db.all(
+		`
+			SELECT c.id, c.price
+			FROM cart_items ci
+			JOIN cars c ON c.id = ci.car_id
+			WHERE ci.user_id = ? AND c.available = 1
+		`,
+		[req.user.id]
+	);
+
+	if (cartCars.length === 0) {
+		return res.status(400).json({ error: "Cart is empty" });
+	}
+
+	const total = cartCars.reduce((sum, car) => sum + car.price, 0);
+
+	await db.exec("BEGIN TRANSACTION");
+	try {
+		const order = await db.run(
+			"INSERT INTO orders (user_id, total) VALUES (?, ?)",
+			[req.user.id, total]
+		);
+
+		for (const car of cartCars) {
+			const update = await db.run(
+				"UPDATE cars SET available = 0 WHERE id = ? AND available = 1",
+				[car.id]
+			);
+
+			if (update.changes === 0) {
+				throw new Error("Car is no longer available");
+			}
+
+			await db.run(
+				"INSERT INTO order_items (order_id, car_id, price) VALUES (?, ?, ?)",
+				[order.lastID, car.id, car.price]
+			);
+		}
+
+		await db.run("DELETE FROM cart_items WHERE user_id = ?", [req.user.id]);
+		await db.exec("COMMIT");
+
+		res.json({
+			orderId: order.lastID,
+			total,
+			itemCount: cartCars.length,
+		});
+	} catch (err) {
+		await db.exec("ROLLBACK");
+		res.status(409).json({ error: err.message });
+	}
 });
 
 async function startServer() {
@@ -168,6 +296,35 @@ async function startServer() {
 	`);
 
 	await seedCars(db);
+
+	await db.exec(`
+		CREATE TABLE IF NOT EXISTS cart_items (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			car_id INTEGER NOT NULL,
+			created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			UNIQUE(user_id, car_id),
+			FOREIGN KEY(user_id) REFERENCES users(id),
+			FOREIGN KEY(car_id) REFERENCES cars(id)
+		);
+
+		CREATE TABLE IF NOT EXISTS orders (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			total INTEGER NOT NULL,
+			created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY(user_id) REFERENCES users(id)
+		);
+
+		CREATE TABLE IF NOT EXISTS order_items (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			order_id INTEGER NOT NULL,
+			car_id INTEGER NOT NULL,
+			price INTEGER NOT NULL,
+			FOREIGN KEY(order_id) REFERENCES orders(id),
+			FOREIGN KEY(car_id) REFERENCES cars(id)
+		);
+	`);
 
 	app.listen(BE_PORT, () => console.log(`🚗 Backend running on port ${BE_PORT}`));
 }

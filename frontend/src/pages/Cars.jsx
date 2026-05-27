@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchCars } from "../api";
 import AccountMenu from "../components/AccountMenu";
+import CartLink from "../components/CartLink";
 
 const initialFilters = {
 	model: "",
@@ -17,7 +18,7 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 	maximumFractionDigits: 0,
 });
 
-export default function Cars({ user, setUser }) {
+export default function Cars({ user, setUser, cartCount }) {
 	const [filters, setFilters] = useState(initialFilters);
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -71,6 +72,7 @@ export default function Cars({ user, setUser }) {
 					<p id="cars-count" data-testid="cars-count" className="cars-count">
 						{cars.length} results
 					</p>
+					<CartLink count={cartCount} />
 					<AccountMenu user={user} setUser={setUser} />
 				</div>
 			</header>

@@ -38,3 +38,55 @@ export async function fetchCar(token, id) {
 	if (!res.ok) throw new Error("Unable to load car");
 	return res.json();
 }
+
+export async function fetchCart(token) {
+	const res = await fetch(`${BE_HOST}cart`, {
+		headers: { Authorization: `Bearer ${token}` },
+		cache: "no-store",
+	});
+
+	if (!res.ok) throw new Error("Unable to load cart");
+	return res.json();
+}
+
+export async function fetchCartCount(token) {
+	const res = await fetch(`${BE_HOST}cart/count`, {
+		headers: { Authorization: `Bearer ${token}` },
+		cache: "no-store",
+	});
+
+	if (!res.ok) throw new Error("Unable to load cart count");
+	return res.json();
+}
+
+export async function addToCart(token, id) {
+	const res = await fetch(`${BE_HOST}cart/add/${id}`, {
+		method: "POST",
+		headers: { Authorization: `Bearer ${token}` },
+		cache: "no-store",
+	});
+
+	const data = await res.json().catch(() => ({}));
+
+	if (!res.ok) {
+		throw new Error(data.error || "Unable to add car to cart");
+	}
+
+	return data;
+}
+
+export async function createOrder(token) {
+	const res = await fetch(`${BE_HOST}order`, {
+		method: "POST",
+		headers: { Authorization: `Bearer ${token}` },
+		cache: "no-store",
+	});
+
+	const data = await res.json().catch(() => ({}));
+
+	if (!res.ok) {
+		throw new Error(data.error || "Unable to create order");
+	}
+
+	return data;
+}

@@ -64,9 +64,17 @@ export async function createCarsTable(db) {
 			year INTEGER NOT NULL,
 			range_miles INTEGER NOT NULL,
 			price INTEGER NOT NULL,
-			image_url TEXT NOT NULL
+			image_url TEXT NOT NULL,
+			available INTEGER NOT NULL DEFAULT 1
 		)
 	`);
+
+	const columns = await db.all("PRAGMA table_info(cars)");
+	const hasAvailable = columns.some((column) => column.name === "available");
+
+	if (!hasAvailable) {
+		await db.exec("ALTER TABLE cars ADD COLUMN available INTEGER NOT NULL DEFAULT 1");
+	}
 }
 
 export async function seedCars(db) {

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkAuth } from "../api";
 import AccountMenu from "../components/AccountMenu";
+import CartLink from "../components/CartLink";
 
-export default function AccountDetails({ user, setUser }) {
+export default function AccountDetails({ user, setUser, cartCount }) {
 	const [account, setAccount] = useState(user);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -56,7 +57,10 @@ export default function AccountDetails({ user, setUser }) {
 						Account Details
 					</h1>
 				</div>
-				<AccountMenu user={user} setUser={setUser} />
+				<div id="account-header-actions" data-testid="account-header-actions" className="header-actions">
+					<CartLink count={cartCount} />
+					<AccountMenu user={user} setUser={setUser} />
+				</div>
 			</header>
 
 			{loading && (
