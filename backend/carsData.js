@@ -98,3 +98,27 @@ export async function seedCars(db) {
 		);
 	}
 }
+
+export async function resetCars(db) {
+	await createCarsTable(db);
+	await db.run("DELETE FROM cars");
+	await db.run("DELETE FROM sqlite_sequence WHERE name = ?", ["cars"]);
+
+	for (const car of sampleCars) {
+		await db.run(
+			`
+				INSERT INTO cars
+					(model, make, year, range_miles, price, image_url, available)
+				VALUES (?, ?, ?, ?, ?, ?, 1)
+			`,
+			[
+				car.model,
+				car.make,
+				car.year,
+				car.rangeMiles,
+				car.price,
+				car.imageUrl,
+			]
+		);
+	}
+}

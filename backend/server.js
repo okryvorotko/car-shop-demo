@@ -4,7 +4,7 @@ import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { seedCars } from "./carsData.js";
+import { resetCars, sampleCars, seedCars } from "./carsData.js";
 
 const app = express();
 app.use(cors());
@@ -19,12 +19,28 @@ app.get("/ping", (req, res) => {
 const BE_PORT = Number(process.env.BE_PORT || 4000);
 const SECRET = process.env.JWT_SECRET;
 
+async function getTokenVersion() {
+	const state = await db.get(
+		"SELECT value FROM app_state WHERE key = ?",
+		["token_version"]
+	);
+
+	return Number(state?.value || 0);
+}
+
 const auth = async (req, res, next) => {
 	const header = req.headers.authorization;
 	if (!header) return res.status(401).json({ error: "No token" });
 	const token = header.split(" ")[1];
 	try {
 		const decoded = jwt.verify(token, SECRET);
+		const tokenVersion = Number(decoded.tokenVersion ?? 0);
+		const currentTokenVersion = await getTokenVersion();
+
+		if (tokenVersion !== currentTokenVersion) {
+			return res.status(401).json({ error: "Invalid token" });
+		}
+
 		req.user = decoded;
 		next();
 	} catch {
@@ -58,9 +74,14 @@ app.post("/auth/login", async (req, res) => {
 	if (!user) return res.status(400).json({ error: "Invalid credentials" });
 	const valid = await bcrypt.compare(password, user.password);
 	if (!valid) return res.status(400).json({ error: "Invalid credentials" });
-	const token = jwt.sign({ id: user.id, username: user.username }, SECRET, {
-		expiresIn: "1h",
-	});
+	const tokenVersion = await getTokenVersion();
+	const token = jwt.sign(
+		{ id: user.id, username: user.username, tokenVersion },
+		SECRET,
+		{
+			expiresIn: "1h",
+		}
+	);
 	res.json({ token });
 });
 
@@ -283,6 +304,40 @@ app.post("/order", auth, async (req, res) => {
 	}
 });
 
+app.post("/admin/reset", async (req, res) => {
+	await db.exec("BEGIN TRANSACTION");
+	try {
+		await db.run("DELETE FROM order_items");
+		await db.run("DELETE FROM orders");
+		await db.run("DELETE FROM cart_items");
+		await db.run("DELETE FROM users");
+		await db.run(
+			"DELETE FROM sqlite_sequence WHERE name IN (?, ?, ?, ?, ?)",
+			["users", "cart_items", "orders", "order_items", "cars"]
+		);
+		await resetCars(db);
+		await db.run(
+			`
+				UPDATE app_state
+				SET value = CAST(CAST(value AS INTEGER) + 1 AS TEXT)
+				WHERE key = ?
+			`,
+			["token_version"]
+		);
+		await db.exec("COMMIT");
+
+		res.json({
+			ok: true,
+			usersDeleted: true,
+			tokensInvalidated: true,
+			carsRestored: sampleCars.length,
+		});
+	} catch (err) {
+		await db.exec("ROLLBACK");
+		res.status(500).json({ error: err.message });
+	}
+});
+
 async function startServer() {
 	db = await open({ filename: "./db.sqlite", driver: sqlite3.Database });
 
@@ -298,6 +353,11 @@ async function startServer() {
 	await seedCars(db);
 
 	await db.exec(`
+		CREATE TABLE IF NOT EXISTS app_state (
+			key TEXT PRIMARY KEY,
+			value TEXT NOT NULL
+		);
+
 		CREATE TABLE IF NOT EXISTS cart_items (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
@@ -325,6 +385,11 @@ async function startServer() {
 			FOREIGN KEY(car_id) REFERENCES cars(id)
 		);
 	`);
+
+	await db.run(
+		"INSERT OR IGNORE INTO app_state (key, value) VALUES (?, ?)",
+		["token_version", "0"]
+	);
 
 	app.listen(BE_PORT, () => console.log(`🚗 Backend running on port ${BE_PORT}`));
 }
