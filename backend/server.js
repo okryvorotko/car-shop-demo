@@ -16,7 +16,7 @@ app.get("/ping", (req, res) => {
 	res.json({ message: "pong" });
 });
 
-const BE_PORT = process.env.BE_PORT;
+const BE_PORT = Number(process.env.BE_PORT || 4000);
 const SECRET = process.env.JWT_SECRET;
 
 const auth = async (req, res, next) => {
@@ -123,6 +123,36 @@ app.get("/cars", auth, async (req, res) => {
 	);
 
 	res.json(cars);
+});
+
+app.get("/cars/:id", auth, async (req, res) => {
+	const carId = Number(req.params.id);
+
+	if (!Number.isInteger(carId) || carId < 1) {
+		return res.status(400).json({ error: "Invalid car id" });
+	}
+
+	const car = await db.get(
+		`
+			SELECT
+				id,
+				model,
+				make,
+				year,
+				range_miles AS rangeMiles,
+				price,
+				image_url AS imageUrl
+			FROM cars
+			WHERE id = ?
+		`,
+		[carId]
+	);
+
+	if (!car) {
+		return res.status(404).json({ error: "Car not found" });
+	}
+
+	res.json(car);
 });
 
 async function startServer() {

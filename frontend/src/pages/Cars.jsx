@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchCars } from "../api";
 
 const initialFilters = {
@@ -188,36 +189,44 @@ export default function Cars({ user }) {
 						className="car-card"
 						key={car.id}
 					>
-						<img
-							id={`car-image-${car.id}`}
-							data-testid={`car-image-${car.id}`}
-							src={car.imageUrl}
-							alt={`${car.year} ${car.model}`}
-						/>
-						<div
-							id={`car-details-${car.id}`}
-							data-testid={`car-details-${car.id}`}
-							className="car-details"
+						<Link
+							id={`car-card-link-${car.id}`}
+							data-testid={`car-card-link-${car.id}`}
+							className="car-card-link"
+							to={`/cars/${car.id}`}
+							aria-label={`View details for ${car.year} ${car.model}`}
 						>
-							<p id={`car-make-${car.id}`} data-testid={`car-make-${car.id}`}>
-								{car.make}
-							</p>
-							<h2 id={`car-model-${car.id}`} data-testid={`car-model-${car.id}`}>
-								{car.year} {car.model}
-							</h2>
+							<img
+								id={`car-image-${car.id}`}
+								data-testid={`car-image-${car.id}`}
+								src={car.imageUrl}
+								alt={`${car.year} ${car.model}`}
+							/>
 							<div
-								id={`car-specs-${car.id}`}
-								data-testid={`car-specs-${car.id}`}
-								className="car-specs"
+								id={`car-details-${car.id}`}
+								data-testid={`car-details-${car.id}`}
+								className="car-details"
 							>
-								<span id={`car-range-${car.id}`} data-testid={`car-range-${car.id}`}>
-									{car.rangeMiles} mi range
-								</span>
-								<span id={`car-price-${car.id}`} data-testid={`car-price-${car.id}`}>
-									{currencyFormatter.format(car.price)}
-								</span>
+								<p id={`car-make-${car.id}`} data-testid={`car-make-${car.id}`}>
+									{car.make}
+								</p>
+								<h2 id={`car-model-${car.id}`} data-testid={`car-model-${car.id}`}>
+									{car.year} {car.model}
+								</h2>
+								<div
+									id={`car-specs-${car.id}`}
+									data-testid={`car-specs-${car.id}`}
+									className="car-specs"
+								>
+									<span id={`car-range-${car.id}`} data-testid={`car-range-${car.id}`}>
+										{car.rangeMiles} mi range
+									</span>
+									<span id={`car-price-${car.id}`} data-testid={`car-price-${car.id}`}>
+										{currencyFormatter.format(car.price)}
+									</span>
+								</div>
 							</div>
-						</div>
+						</Link>
 					</article>
 				))}
 			</section>

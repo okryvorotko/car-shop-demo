@@ -27,3 +27,14 @@ export async function fetchCars(token, filters = {}) {
 	if (!res.ok) throw new Error("Unable to load cars");
 	return res.json();
 }
+
+export async function fetchCar(token, id) {
+	const res = await fetch(`${BE_HOST}cars/${id}`, {
+		headers: { Authorization: `Bearer ${token}` },
+		cache: "no-store",
+	});
+
+	if (res.status === 404) throw new Error("Car not found");
+	if (!res.ok) throw new Error("Unable to load car");
+	return res.json();
+}
