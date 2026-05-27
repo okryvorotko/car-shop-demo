@@ -8,6 +8,7 @@ import Cars from "./pages/Cars";
 import CarDetails from "./pages/CarDetails";
 import AccountDetails from "./pages/AccountDetails";
 import { checkAuth } from "./api";
+import { NightModeProvider } from "./nightMode.jsx";
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -28,17 +29,19 @@ function App() {
 	if (loading) return <div>Loading...</div>;
 	
 	return (
-		<Router>
-			<Routes>
-				<Route path="/" element={<Home user={user} />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/login" element={<Login setUser={setUser} />} />
-				<Route path="/welcome" element={user ? <Welcome user={user} /> : <Navigate to="/" />} />
-				<Route path="/cars" element={user ? <Cars user={user} setUser={setUser} /> : <Navigate to="/login" />} />
-				<Route path="/cars/:id" element={user ? <CarDetails user={user} setUser={setUser} /> : <Navigate to="/login" />} />
-				<Route path="/me" element={user ? <AccountDetails user={user} setUser={setUser} /> : <Navigate to="/login" />} />
-			</Routes>
-		</Router>
+		<NightModeProvider>
+			<Router>
+				<Routes>
+					<Route path="/" element={<Home user={user} />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login setUser={setUser} />} />
+					<Route path="/welcome" element={user ? <Welcome user={user} /> : <Navigate to="/" />} />
+					<Route path="/cars" element={user ? <Cars user={user} setUser={setUser} /> : <Navigate to="/login" />} />
+					<Route path="/cars/:id" element={user ? <CarDetails user={user} setUser={setUser} /> : <Navigate to="/login" />} />
+					<Route path="/me" element={user ? <AccountDetails user={user} setUser={setUser} /> : <Navigate to="/login" />} />
+				</Routes>
+			</Router>
+		</NightModeProvider>
 	);
 }
 

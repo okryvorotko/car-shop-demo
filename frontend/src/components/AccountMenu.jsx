@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useNightMode } from "../useNightMode";
 
 export default function AccountMenu({ user, setUser }) {
 	const navigate = useNavigate();
+	const { isAutomatic, isNightMode, setNightModeOverride, sunsetLabel } = useNightMode();
 
 	function handleLogout() {
 		localStorage.removeItem("token");
@@ -27,6 +29,21 @@ export default function AccountMenu({ user, setUser }) {
 			</button>
 
 			<div id="account-menu-dropdown" data-testid="account-menu-dropdown" className="account-menu-dropdown" role="menu">
+				<button
+					id="night-mode-toggle"
+					data-testid="night-mode-toggle"
+					type="button"
+					role="menuitemcheckbox"
+					aria-checked={isNightMode}
+					className="night-mode-toggle"
+					title={isAutomatic ? `Following browser timezone sunset (${sunsetLabel})` : "Manual night mode override"}
+					onClick={() => setNightModeOverride(!isNightMode)}
+				>
+					<span>Night Mode</span>
+					<span className="night-mode-switch" aria-hidden="true">
+						<span className="night-mode-switch-thumb" />
+					</span>
+				</button>
 				<button
 					id="account-details-link"
 					data-testid="account-details-link"
