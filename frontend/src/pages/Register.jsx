@@ -24,23 +24,25 @@ export default function Register() {
 	}
 	
 	return (
-		<form onSubmit={handleRegister} className="p-4 flex flex-col gap-2">
-			<h2 id="r_header">Register</h2>
+		<form id="register-form" data-testid="register-form" onSubmit={handleRegister} className="p-4 flex flex-col gap-2">
+			<h2 id="r_header" data-testid="r_header">Register</h2>
 			<input
 				placeholder="Username"
 				id="r_username"
+				data-testid="r_username"
 				value={username}
 				onChange={e => setUsername(e.target.value)}
 			/>
 			<input
 				placeholder="Password"
 				id="r_password"
+				data-testid="r_password"
 				type="password"
 				value={password}
 				onChange={e => setPassword(e.target.value)}
 			/>
-			<button type="submit" id="r_register">Register</button>
-			<p id="r_msg">{msg}</p>
+			<button type="submit" id="r_register" data-testid="r_register">Register</button>
+			<p id="r_msg" data-testid="r_msg">{msg}</p>
 		</form>
 	);
 }

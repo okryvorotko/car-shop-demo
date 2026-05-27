@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
+import Cars from "./pages/Cars";
 import { checkAuth } from "./api";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<Login setUser={setUser} />} />
 				<Route path="/welcome" element={user ? <Welcome user={user} /> : <Navigate to="/" />} />
+				<Route path="/cars" element={user ? <Cars user={user} /> : <Navigate to="/login" />} />
 			</Routes>
 		</Router>
 	);

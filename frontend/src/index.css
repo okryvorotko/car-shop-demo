@@ -15,7 +15,7 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2rem;
   text-align: center;
   padding: 1rem;
@@ -56,4 +56,161 @@ button:hover {
 
 h1, h2 {
   margin: 0;
+}
+
+.cars-page {
+  width: min(1120px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.cars-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.cars-header h1 {
+  font-size: 2rem;
+}
+
+.cars-header p {
+  margin: 0;
+}
+
+.cars-count,
+#cars-eyebrow {
+  color: #5c6670;
+  font-size: 0.95rem;
+}
+
+.cars-filter-form {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr)) auto;
+  align-items: end;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.cars-filter-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  color: #3d454d;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#cars-filter-reset {
+  background: #5b6570;
+}
+
+#cars-filter-reset:hover {
+  background: #414a52;
+}
+
+.cars-status {
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: white;
+  color: #4f5b66;
+}
+
+.cars-status.error {
+  color: #a11218;
+}
+
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.car-card {
+  overflow: hidden;
+  border: 1px solid #e0e4e8;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+.car-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #dfe4ea;
+}
+
+.car-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem;
+}
+
+.car-details p {
+  margin: 0;
+  color: #64707c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.car-details h2 {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.car-specs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #2f3a44;
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .cars-filter-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  #root {
+    padding: 0.75rem;
+  }
+
+  .cars-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cars-filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-actions {
+    width: 100%;
+  }
+
+  .filter-actions button {
+    flex: 1;
+  }
 }

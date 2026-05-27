@@ -29,28 +29,32 @@ export default function Login({ setUser }) {
 			setUser(userData);
 			
 			setMsg("Login successful!");
-			setTimeout(() => navigate("/"), 1000);
+			setTimeout(() => navigate("/cars"), 1000);
 		} else {
 			setMsg(data.error);
 		}
 	}
 	
 	return (
-		<form onSubmit={handleLogin} className="p-4 flex flex-col gap-2">
-			<h2>Login</h2>
+		<form id="login-form" data-testid="login-form" onSubmit={handleLogin} className="p-4 flex flex-col gap-2">
+			<h2 id="login-header" data-testid="login-header">Login</h2>
 			<input
+				id="login-username"
+				data-testid="login-username"
 				placeholder="Username"
 				value={username}
 				onChange={e => setUsername(e.target.value)}
 			/>
 			<input
+				id="login-password"
+				data-testid="login-password"
 				placeholder="Password"
 				type="password"
 				value={password}
 				onChange={e => setPassword(e.target.value)}
 			/>
-			<button type="submit">Login</button>
-			<p>{msg}</p>
+			<button id="login-submit" data-testid="login-submit" type="submit">Login</button>
+			<p id="login-message" data-testid="login-message">{msg}</p>
 		</form>
 	);
 }
