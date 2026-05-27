@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchCar } from "../api";
+import AccountMenu from "../components/AccountMenu";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -8,7 +9,7 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 	maximumFractionDigits: 0,
 });
 
-export default function CarDetails({ user }) {
+export default function CarDetails({ user, setUser }) {
 	const { id } = useParams();
 	const [car, setCar] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -55,16 +56,16 @@ export default function CarDetails({ user }) {
 				className="car-details-header"
 			>
 				<div id="car-details-header-copy" data-testid="car-details-header-copy">
-					<p id="car-details-eyebrow" data-testid="car-details-eyebrow">
-						Signed in as {user.username}
-					</p>
 					<h1 id="car-details-title" data-testid="car-details-title">
 						Car Details
 					</h1>
 				</div>
-				<Link id="car-details-back-link" data-testid="car-details-back-link" to="/cars">
-					Back to cars
-				</Link>
+				<div id="car-details-header-actions" data-testid="car-details-header-actions" className="header-actions">
+					<Link id="car-details-back-link" data-testid="car-details-back-link" to="/cars">
+						Back to cars
+					</Link>
+					<AccountMenu user={user} setUser={setUser} />
+				</div>
 			</header>
 
 			{loading && (

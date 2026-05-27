@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import Cars from "./pages/Cars";
 import CarDetails from "./pages/CarDetails";
+import AccountDetails from "./pages/AccountDetails";
 import { checkAuth } from "./api";
 
 function App() {
@@ -33,8 +34,9 @@ function App() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<Login setUser={setUser} />} />
 				<Route path="/welcome" element={user ? <Welcome user={user} /> : <Navigate to="/" />} />
-				<Route path="/cars" element={user ? <Cars user={user} /> : <Navigate to="/login" />} />
-				<Route path="/cars/:id" element={user ? <CarDetails user={user} /> : <Navigate to="/login" />} />
+				<Route path="/cars" element={user ? <Cars user={user} setUser={setUser} /> : <Navigate to="/login" />} />
+				<Route path="/cars/:id" element={user ? <CarDetails user={user} setUser={setUser} /> : <Navigate to="/login" />} />
+				<Route path="/me" element={user ? <AccountDetails user={user} setUser={setUser} /> : <Navigate to="/login" />} />
 			</Routes>
 		</Router>
 	);

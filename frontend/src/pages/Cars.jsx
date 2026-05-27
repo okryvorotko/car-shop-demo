@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchCars } from "../api";
+import AccountMenu from "../components/AccountMenu";
 
 const initialFilters = {
 	model: "",
@@ -16,7 +17,7 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 	maximumFractionDigits: 0,
 });
 
-export default function Cars({ user }) {
+export default function Cars({ user, setUser }) {
 	const [filters, setFilters] = useState(initialFilters);
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -62,16 +63,16 @@ export default function Cars({ user }) {
 		<main id="cars-page" data-testid="cars-page" className="cars-page">
 			<header id="cars-page-header" data-testid="cars-page-header" className="cars-header">
 				<div id="cars-header-copy" data-testid="cars-header-copy">
-					<p id="cars-eyebrow" data-testid="cars-eyebrow">
-						Signed in as {user.username}
-					</p>
 					<h1 id="cars-title" data-testid="cars-title">
 						Cars Catalog
 					</h1>
 				</div>
-				<p id="cars-count" data-testid="cars-count" className="cars-count">
-					{cars.length} results
-				</p>
+				<div id="cars-header-actions" data-testid="cars-header-actions" className="header-actions">
+					<p id="cars-count" data-testid="cars-count" className="cars-count">
+						{cars.length} results
+					</p>
+					<AccountMenu user={user} setUser={setUser} />
+				</div>
 			</header>
 
 			<form

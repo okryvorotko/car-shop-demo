@@ -1,0 +1,51 @@
+import { useNavigate } from "react-router-dom";
+
+export default function AccountMenu({ user, setUser }) {
+	const navigate = useNavigate();
+
+	function handleLogout() {
+		localStorage.removeItem("token");
+		setUser(null);
+		window.location.replace("/");
+	}
+
+	return (
+		<div id="account-menu" data-testid="account-menu" className="account-menu">
+			<button
+				id="account-menu-trigger"
+				data-testid="account-menu-trigger"
+				className="account-menu-trigger"
+				type="button"
+				aria-haspopup="menu"
+			>
+				<span id="account-menu-icon" data-testid="account-menu-icon" className="account-menu-icon">
+					{user.username.charAt(0).toUpperCase()}
+				</span>
+				<span id="account-menu-name" data-testid="account-menu-name" className="account-menu-name">
+					{user.username}
+				</span>
+			</button>
+
+			<div id="account-menu-dropdown" data-testid="account-menu-dropdown" className="account-menu-dropdown" role="menu">
+				<button
+					id="account-details-link"
+					data-testid="account-details-link"
+					type="button"
+					role="menuitem"
+					onClick={() => navigate("/me")}
+				>
+					Account details
+				</button>
+				<button
+					id="account-logout"
+					data-testid="account-logout"
+					type="button"
+					role="menuitem"
+					onClick={handleLogout}
+				>
+					Logout
+				</button>
+			</div>
+		</div>
+	);
+}
