@@ -107,6 +107,174 @@ h1, h2 {
   margin: 0;
 }
 
+.landing-page {
+  width: min(760px, 100%);
+  min-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.landing-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.75rem, 6vw, 3rem);
+  min-height: min(560px, calc(100vh - 2rem));
+  padding: clamp(1.5rem, 6vw, 4rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.22), transparent 35%),
+    linear-gradient(135deg, rgba(6, 11, 20, 0.98), rgba(12, 20, 31, 0.94)),
+    #0b111d;
+  color: #f8fafc;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+}
+
+.landing-hero::before {
+  content: "";
+  position: absolute;
+  right: 8%;
+  bottom: 18%;
+  left: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.58), transparent);
+  transform: skewY(-5deg);
+}
+
+.landing-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-actions button {
+  min-width: 132px;
+  min-height: 50px;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.landing-primary {
+  background: #facc15;
+  color: #111827;
+}
+
+.landing-primary:hover {
+  background: #eab308;
+}
+
+.landing-secondary {
+  border: 1px solid rgba(248, 250, 252, 0.28);
+  background: rgba(248, 250, 252, 0.08);
+  color: #f8fafc;
+}
+
+.landing-secondary:hover {
+  background: rgba(248, 250, 252, 0.16);
+}
+
+.landing-logo {
+  position: relative;
+  z-index: 1;
+  width: clamp(112px, 30vw, 188px);
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.34);
+}
+
+.auth-page {
+  align-items: stretch;
+}
+
+.auth-panel {
+  position: relative;
+  width: 100%;
+  min-height: min(560px, calc(100vh - 2rem));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.1rem, 4vw, 1.5rem);
+  padding: clamp(1.5rem, 6vw, 4rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.22), transparent 35%),
+    linear-gradient(135deg, rgba(6, 11, 20, 0.98), rgba(12, 20, 31, 0.94)),
+    #0b111d;
+  color: #f8fafc;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+}
+
+.auth-panel::before {
+  content: "";
+  position: absolute;
+  right: 8%;
+  bottom: 18%;
+  left: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.58), transparent);
+  transform: skewY(-5deg);
+}
+
+.auth-title,
+.auth-fields,
+.auth-submit,
+.auth-message {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-title {
+  color: #f8fafc;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.auth-fields {
+  display: grid;
+  gap: 0.75rem;
+  width: min(276px, 100%);
+}
+
+.auth-fields input {
+  min-height: 50px;
+  padding: 0.85rem 1rem;
+  border-color: rgba(248, 250, 252, 0.22);
+  background: rgba(248, 250, 252, 0.08);
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.auth-fields input::placeholder {
+  color: #cbd5e1;
+}
+
+.auth-submit {
+  min-width: 132px;
+  min-height: 50px;
+  padding: 0.85rem 1.25rem;
+}
+
+.auth-message {
+  min-height: 1.25rem;
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
 .cars-page {
   width: min(1120px, 100%);
   display: flex;
@@ -582,6 +750,10 @@ h1, h2 {
 }
 
 @media (max-width: 860px) {
+  .landing-hero {
+    min-height: min(520px, calc(100vh - 2rem));
+  }
+
   .cars-filter-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -598,6 +770,30 @@ h1, h2 {
 @media (max-width: 560px) {
   #root {
     padding: 0.75rem;
+  }
+
+  .landing-page {
+    min-height: calc(100vh - 1.5rem);
+  }
+
+  .landing-hero {
+    gap: 1.35rem;
+    padding: 1.25rem;
+  }
+
+  .auth-panel {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .auth-fields,
+  .auth-submit {
+    width: 100%;
+  }
+
+  .landing-actions,
+  .landing-actions button {
+    width: 100%;
   }
 
   .cars-header {
