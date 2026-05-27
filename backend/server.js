@@ -59,7 +59,15 @@ app.post("/auth/register", async (req, res) => {
 			"INSERT INTO users (username, password) VALUES (?, ?)",
 			[username, hashed]
 		);
-		res.json({ id: result.lastID, username });
+		const tokenVersion = await getTokenVersion();
+		const token = jwt.sign(
+			{ id: result.lastID, username, tokenVersion },
+			SECRET,
+			{
+				expiresIn: "1h",
+			}
+		);
+		res.json({ token });
 	} catch {
 		res.status(400).json({ error: "User exists" });
 	}

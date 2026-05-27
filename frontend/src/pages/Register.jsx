@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 
 const BE_HOST = import.meta.env.VITE_BE_HOST;
 
-export default function Register() {
+export default function Register({ setUser }) {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [msg, setMsg] = useState('');
@@ -18,8 +18,16 @@ export default function Register() {
 		});
 		const data = await res.json();
 		if (res.ok) {
+			localStorage.setItem("token", data.token);
+
+			const userRes = await fetch(`${BE_HOST}me`, {
+				headers: { Authorization: `Bearer ${data.token}` },
+			});
+			const userData = await userRes.json();
+			setUser(userData);
+
 			setMsg('Registered successfully!');
-			setTimeout(() => navigate('/login'), 1000); // wait 1s before redirect
+			setTimeout(() => navigate('/cars'), 1000);
 		} else setMsg(data.error);
 	}
 	
