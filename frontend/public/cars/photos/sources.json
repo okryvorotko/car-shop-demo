@@ -1,0 +1,184 @@
+[
+  {
+    "slug": "tesla-model-3",
+    "title": "Tesla Model 3",
+    "page": "https://en.wikipedia.org/wiki/Tesla_Model_3",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg/3840px-Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg",
+    "file": "/cars/photos/2023-tesla-model-3.jpg"
+  },
+  {
+    "slug": "ford-mustang-mach-e",
+    "title": "Ford Mustang Mach-E",
+    "page": "https://en.wikipedia.org/wiki/Ford_Mustang_Mach-E",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/49/2021_Ford_Mustang_Mach-E_Standard_Range_Front.jpg",
+    "file": "/cars/photos/2024-ford-mustang-mach-e.jpg"
+  },
+  {
+    "slug": "hyundai-ioniq-5",
+    "title": "Hyundai Ioniq 5",
+    "page": "https://en.wikipedia.org/wiki/Hyundai_Ioniq_5",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg/3840px-Hyundai_Ioniq_5_AWD_Techniq-Paket_%E2%80%93_f_31122024.jpg",
+    "file": "/cars/photos/2024-hyundai-ioniq-5.jpg"
+  },
+  {
+    "slug": "chevrolet-bolt-ev",
+    "title": "Chevrolet Bolt",
+    "page": "https://en.wikipedia.org/wiki/Chevrolet_Bolt",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/2022_Chevrolet_Bolt_EV_2LT%2C_NYC_official_fleet_1.2.23.jpg/3840px-2022_Chevrolet_Bolt_EV_2LT%2C_NYC_official_fleet_1.2.23.jpg",
+    "file": "/cars/photos/2023-chevrolet-bolt-ev.jpg"
+  },
+  {
+    "slug": "kia-ev6",
+    "title": "Kia EV6",
+    "page": "https://en.wikipedia.org/wiki/Kia_EV6",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/2021_Kia_EV6_GT-Line_S.jpg/3840px-2021_Kia_EV6_GT-Line_S.jpg",
+    "file": "/cars/photos/2024-kia-ev6.jpg"
+  },
+  {
+    "slug": "nissan-leaf",
+    "title": "Nissan Leaf",
+    "page": "https://en.wikipedia.org/wiki/Nissan_Leaf",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Nissan_Leaf_%28ZE2%29_autoMOBIL_T%C3%BCbingen_2025_DSC_2752.jpg/3840px-Nissan_Leaf_%28ZE2%29_autoMOBIL_T%C3%BCbingen_2025_DSC_2752.jpg",
+    "file": "/cars/photos/2024-nissan-leaf.jpg"
+  },
+  {
+    "slug": "tesla-model-y",
+    "title": "Tesla Model Y",
+    "page": "https://en.wikipedia.org/wiki/Tesla_Model_Y",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/2022_Tesla_Model_Y_Long_Range_AWD_Front.jpg/3840px-2022_Tesla_Model_Y_Long_Range_AWD_Front.jpg",
+    "file": "/cars/photos/2025-tesla-model-y.jpg"
+  },
+  {
+    "slug": "tesla-model-s",
+    "title": "Tesla Model S",
+    "page": "https://en.wikipedia.org/wiki/Tesla_Model_S",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Tesla_Model_S_%28Facelift_ab_04-2016%29_%28cropped%29.jpg",
+    "file": "/cars/photos/2025-tesla-model-s.jpg"
+  },
+  {
+    "slug": "tesla-model-x",
+    "title": "Tesla Model X",
+    "page": "https://en.wikipedia.org/wiki/Tesla_Model_X",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/92/2017_Tesla_Model_X_100D_Front.jpg",
+    "file": "/cars/photos/2025-tesla-model-x.jpg"
+  },
+  {
+    "slug": "tesla-cybertruck",
+    "title": "Tesla Cybertruck",
+    "page": "https://en.wikipedia.org/wiki/Tesla_Cybertruck",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/2024_Tesla_Cybertruck_Foundation_Series%2C_front_left_%28Greenwich%29.jpg/3840px-2024_Tesla_Cybertruck_Foundation_Series%2C_front_left_%28Greenwich%29.jpg",
+    "file": "/cars/photos/2025-tesla-cybertruck.jpg"
+  },
+  {
+    "slug": "chevrolet-equinox-ev",
+    "title": "Chevrolet Equinox EV",
+    "page": "https://en.wikipedia.org/wiki/Chevrolet_Equinox_EV",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/46/2025_Chevrolet_Equinox_EV%2C_front_left_4.26.25.jpg",
+    "file": "/cars/photos/2025-chevrolet-equinox-ev.jpg"
+  },
+  {
+    "slug": "chevrolet-blazer-ev",
+    "title": "Chevrolet Blazer EV",
+    "page": "https://en.wikipedia.org/wiki/Chevrolet_Blazer_EV",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/4/43/2024_Chevrolet_Blazer_EV_2LT_AWD_in_Summit_White%2C_front_right%2C_2024-03-31.jpg",
+    "file": "/cars/photos/2025-chevrolet-blazer-ev.jpg"
+  },
+  {
+    "slug": "ford-f-150-lightning",
+    "title": "Ford F-150 Lightning",
+    "page": "https://en.wikipedia.org/wiki/Ford_F-150_Lightning",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/2022_Ford_F-150_Lightning_Lariat_in_Atlas_Blue_Metallic%2C_Front_Right%2C_08-06-2022.jpg/3840px-2022_Ford_F-150_Lightning_Lariat_in_Atlas_Blue_Metallic%2C_Front_Right%2C_08-06-2022.jpg",
+    "file": "/cars/photos/2025-ford-f-150-lightning.jpg"
+  },
+  {
+    "slug": "honda-prologue",
+    "title": "Honda Prologue",
+    "page": "https://en.wikipedia.org/wiki/Honda_Prologue",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/d/d8/2024_Honda_Prologue_Touring%2C_front_7.11.25.jpg",
+    "file": "/cars/photos/2025-honda-prologue.jpg"
+  },
+  {
+    "slug": "kia-ev9",
+    "title": "Kia EV9",
+    "page": "https://en.wikipedia.org/wiki/Kia_EV9",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Kia_EV9_1X7A2472.jpg",
+    "file": "/cars/photos/2025-kia-ev9.jpg"
+  },
+  {
+    "slug": "hyundai-ioniq-6",
+    "title": "Hyundai Ioniq 6",
+    "page": "https://en.wikipedia.org/wiki/Hyundai_Ioniq_6",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/9/96/2023_Hyundai_Ioniq_6_Limited%2C_front_4.27.23.jpg",
+    "file": "/cars/photos/2025-hyundai-ioniq-6.jpg"
+  },
+  {
+    "slug": "nissan-ariya",
+    "title": "Nissan Ariya",
+    "page": "https://en.wikipedia.org/wiki/Nissan_Ariya",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/2023_Nissan_Ariya_Advance_Front.jpg/3840px-2023_Nissan_Ariya_Advance_Front.jpg",
+    "file": "/cars/photos/2025-nissan-ariya.jpg"
+  },
+  {
+    "slug": "cadillac-lyriq",
+    "title": "Cadillac Lyriq",
+    "page": "https://en.wikipedia.org/wiki/Cadillac_Lyriq",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2023_Cadillac_Lyriq_in_Satin_Steel_Metallic%2C_front_left.jpg/3840px-2023_Cadillac_Lyriq_in_Satin_Steel_Metallic%2C_front_left.jpg",
+    "file": "/cars/photos/2025-cadillac-lyriq.jpg"
+  },
+  {
+    "slug": "volkswagen-id-4",
+    "title": "Volkswagen ID.4",
+    "page": "https://en.wikipedia.org/wiki/Volkswagen_ID.4",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/2025_Volkswagen_ID4_Pro_Redspot_front.jpg/3840px-2025_Volkswagen_ID4_Pro_Redspot_front.jpg",
+    "file": "/cars/photos/2025-volkswagen-id-4.jpg"
+  },
+  {
+    "slug": "toyota-bz4x",
+    "title": "Toyota bZ4X",
+    "page": "https://en.wikipedia.org/wiki/Toyota_bZ4X",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Toyota_bZ4X_Automesse_Ludwigsburg_2022_1X7A5895.jpg/3840px-Toyota_bZ4X_Automesse_Ludwigsburg_2022_1X7A5895.jpg",
+    "file": "/cars/photos/2025-toyota-bz4x.jpg"
+  },
+  {
+    "slug": "subaru-solterra",
+    "title": "Toyota bZ4X",
+    "page": "https://en.wikipedia.org/wiki/Toyota_bZ4X",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Toyota_bZ4X_Automesse_Ludwigsburg_2022_1X7A5895.jpg/3840px-Toyota_bZ4X_Automesse_Ludwigsburg_2022_1X7A5895.jpg",
+    "file": "/cars/photos/2025-subaru-solterra.jpg"
+  },
+  {
+    "slug": "lexus-rz",
+    "title": "Lexus RZ",
+    "page": "https://en.wikipedia.org/wiki/Lexus_RZ",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Lexus_RZ_300e_%28XEBM10%29_IMG_6622.jpg/3840px-Lexus_RZ_300e_%28XEBM10%29_IMG_6622.jpg",
+    "file": "/cars/photos/2025-lexus-rz.jpg"
+  },
+  {
+    "slug": "genesis-gv60",
+    "title": "Genesis GV60",
+    "page": "https://en.wikipedia.org/wiki/Genesis_GV60",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Genesis_GV60_1X7A5760.jpg/3840px-Genesis_GV60_1X7A5760.jpg",
+    "file": "/cars/photos/2025-genesis-gv60.jpg"
+  },
+  {
+    "slug": "polestar-3",
+    "title": "Polestar 3",
+    "page": "https://en.wikipedia.org/wiki/Polestar_3",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Polestar_3_Auto_Zuerich_2023_1X7A1307.jpg/3840px-Polestar_3_Auto_Zuerich_2023_1X7A1307.jpg",
+    "file": "/cars/photos/2025-polestar-3.jpg"
+  },
+  {
+    "slug": "rivian-r1s",
+    "title": "Rivian R1S",
+    "page": "https://en.wikipedia.org/wiki/Rivian_R1S",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/8/89/2023_Rivian_R1S_Adventure%2C_front_1.29.23.jpg",
+    "file": "/cars/photos/2025-rivian-r1s.jpg"
+  },
+  {
+    "slug": "lucid-air",
+    "title": "Lucid Air",
+    "page": "https://en.wikipedia.org/wiki/Lucid_Air",
+    "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/2022_Lucid_Air_Grand_Touring_in_Zenith_Red%2C_front_left.jpg/3840px-2022_Lucid_Air_Grand_Touring_in_Zenith_Red%2C_front_left.jpg",
+    "file": "/cars/photos/2025-lucid-air.jpg"
+  }
+]
