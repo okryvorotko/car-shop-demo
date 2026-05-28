@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createOrder, fetchCart } from "../api";
 import AccountMenu from "../components/AccountMenu";
 import CartLink from "../components/CartLink";
+import { useDistanceUnits } from "../useDistanceUnits";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -12,6 +13,7 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 
 export default function Cart({ user, setUser, cartCount, refreshCartCount }) {
 	const navigate = useNavigate();
+	const { formatDistance } = useDistanceUnits();
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [buying, setBuying] = useState(false);
@@ -134,7 +136,7 @@ export default function Cart({ user, setUser, cartCount, refreshCartCount }) {
 											{car.year} {car.model}
 										</h2>
 										<div className="car-specs">
-											<span>{car.rangeMiles} mi range</span>
+											<span>{formatDistance(car.rangeMiles)} range</span>
 											<span>{currencyFormatter.format(car.price)}</span>
 										</div>
 									</div>

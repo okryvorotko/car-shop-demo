@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchCars } from "../api";
 import AccountMenu from "../components/AccountMenu";
 import CartLink from "../components/CartLink";
+import { useDistanceUnits } from "../useDistanceUnits";
 
 const initialFilters = {
 	model: "",
@@ -111,6 +112,7 @@ function DoubleSliderFilter({
 }
 
 export default function Cars({ user, setUser, cartCount }) {
+	const { formatDistance } = useDistanceUnits();
 	const [filters, setFilters] = useState(initialFilters);
 	const [cars, setCars] = useState([]);
 	const [catalogBounds, setCatalogBounds] = useState(null);
@@ -270,7 +272,7 @@ export default function Cars({ user, setUser, cartCount }) {
 							max={catalogBounds.maxRange}
 							minValue={sliderValues.minRange}
 							maxValue={sliderValues.maxRange}
-							formatValue={(value) => `${value} mi`}
+							formatValue={formatDistance}
 							onChange={handleSliderChange}
 						/>
 
@@ -357,7 +359,7 @@ export default function Cars({ user, setUser, cartCount }) {
 									className="car-specs"
 								>
 									<span id={`car-range-${car.id}`} data-testid={`car-range-${car.id}`}>
-										{car.rangeMiles} mi range
+										{formatDistance(car.rangeMiles)} range
 									</span>
 									<span id={`car-price-${car.id}`} data-testid={`car-price-${car.id}`}>
 										{currencyFormatter.format(car.price)}

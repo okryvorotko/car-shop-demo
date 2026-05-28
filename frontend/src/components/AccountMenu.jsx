@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useDistanceUnits } from "../useDistanceUnits";
 import { useNightMode } from "../useNightMode";
 
 export default function AccountMenu({ user, setUser }) {
 	const navigate = useNavigate();
+	const { isMetric, setMetricPreference } = useDistanceUnits();
 	const { isAutomatic, isNightMode, setNightModeOverride, sunsetLabel } = useNightMode();
 
 	function handleLogout() {
@@ -35,13 +37,27 @@ export default function AccountMenu({ user, setUser }) {
 					type="button"
 					role="menuitemcheckbox"
 					aria-checked={isNightMode}
-					className="night-mode-toggle"
+					className="account-menu-toggle"
 					title={isAutomatic ? `Following browser timezone sunset (${sunsetLabel})` : "Manual night mode override"}
 					onClick={() => setNightModeOverride(!isNightMode)}
 				>
 					<span>Night Mode</span>
-					<span className="night-mode-switch" aria-hidden="true">
-						<span className="night-mode-switch-thumb" />
+					<span className="account-menu-switch" aria-hidden="true">
+						<span className="account-menu-switch-thumb" />
+					</span>
+				</button>
+				<button
+					id="metric-toggle"
+					data-testid="metric-toggle"
+					type="button"
+					role="menuitemcheckbox"
+					aria-checked={isMetric}
+					className="account-menu-toggle"
+					onClick={() => setMetricPreference(!isMetric)}
+				>
+					<span>Metric</span>
+					<span className="account-menu-switch" aria-hidden="true">
+						<span className="account-menu-switch-thumb" />
 					</span>
 				</button>
 				<button

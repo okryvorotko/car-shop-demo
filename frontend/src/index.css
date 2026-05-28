@@ -456,14 +456,14 @@ h1, h2 {
   color: var(--text-strong);
 }
 
-.night-mode-toggle {
+.account-menu-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.night-mode-switch {
+.account-menu-switch {
   position: relative;
   display: inline-flex;
   flex: 0 0 auto;
@@ -475,7 +475,7 @@ h1, h2 {
   transition: background 0.2s;
 }
 
-.night-mode-switch-thumb {
+.account-menu-switch-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -485,11 +485,11 @@ h1, h2 {
   transition: transform 0.2s, background 0.2s;
 }
 
-.night-mode-toggle[aria-checked="true"] .night-mode-switch {
+.account-menu-toggle[aria-checked="true"] .account-menu-switch {
   background: var(--primary);
 }
 
-.night-mode-toggle[aria-checked="true"] .night-mode-switch-thumb {
+.account-menu-toggle[aria-checked="true"] .account-menu-switch-thumb {
   transform: translateX(16px);
   background: white;
 }
