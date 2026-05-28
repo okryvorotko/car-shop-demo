@@ -103,10 +103,27 @@ app.get("/me", auth, async (req, res) => {
 
 // --- Cars catalog ---
 app.get("/cars", auth, async (req, res) => {
-	const { model, minRange, maxRange, minPrice, maxPrice, range, price } =
-		req.query;
+	const {
+		model,
+		minRange,
+		maxRange,
+		minPrice,
+		maxPrice,
+		range,
+		price,
+		sortBy,
+		sortDirection,
+	} = req.query;
 	const filters = ["available = 1"];
 	const params = [];
+	const sortableColumns = {
+		year: "year",
+		price: "price",
+		range: "range_miles",
+	};
+	const orderColumn = sortableColumns[sortBy] || sortableColumns.price;
+	const orderDirection =
+		String(sortDirection).toLowerCase() === "desc" ? "DESC" : "ASC";
 
 	if (model) {
 		filters.push("LOWER(model) LIKE ?");
@@ -147,7 +164,7 @@ app.get("/cars", auth, async (req, res) => {
 				available
 			FROM cars
 			${where}
-			ORDER BY price ASC
+			ORDER BY ${orderColumn} ${orderDirection}, id ASC
 		`,
 		params
 	);

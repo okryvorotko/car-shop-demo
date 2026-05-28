@@ -11,6 +11,8 @@ const initialFilters = {
 	maxRange: "",
 	minPrice: "",
 	maxPrice: "",
+	sortBy: "price",
+	sortDirection: "asc",
 };
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
@@ -259,6 +261,35 @@ export default function Cars({ user, setUser, cartCount }) {
 						value={filters.model}
 						onChange={handleChange}
 					/>
+				</label>
+
+				<label id="sort-by-label" data-testid="sort-by-label">
+					Sort by
+					<select
+						id="sort-by-select"
+						data-testid="sort-by-select"
+						name="sortBy"
+						value={filters.sortBy}
+						onChange={handleChange}
+					>
+						<option value="price">Price</option>
+						<option value="year">Year</option>
+						<option value="range">Range</option>
+					</select>
+				</label>
+
+				<label id="sort-direction-label" data-testid="sort-direction-label">
+					Direction
+					<select
+						id="sort-direction-select"
+						data-testid="sort-direction-select"
+						name="sortDirection"
+						value={filters.sortDirection}
+						onChange={handleChange}
+					>
+						<option value="asc">Low to high</option>
+						<option value="desc">High to low</option>
+					</select>
 				</label>
 
 				{catalogBounds && sliderValues && (

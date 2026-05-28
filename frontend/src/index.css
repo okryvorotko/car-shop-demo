@@ -80,7 +80,8 @@ form {
   width: 300px;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid var(--border);
@@ -496,7 +497,7 @@ h1, h2 {
 
 .cars-filter-form {
   display: grid;
-  grid-template-columns: minmax(160px, 0.8fr) repeat(2, minmax(240px, 1fr)) auto;
+  grid-template-columns: minmax(150px, 0.8fr) repeat(2, minmax(130px, 0.6fr)) repeat(2, minmax(220px, 1fr)) auto;
   align-items: end;
   width: 100%;
   padding: 1rem;
