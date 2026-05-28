@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchCars } from "../api";
 import AccountMenu from "../components/AccountMenu";
@@ -18,30 +18,164 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 	maximumFractionDigits: 0,
 });
 
+function getCatalogBounds(cars) {
+	if (!cars.length) {
+		return null;
+	}
+
+	return cars.reduce(
+		(bounds, car) => ({
+			minRange: Math.min(bounds.minRange, car.rangeMiles),
+			maxRange: Math.max(bounds.maxRange, car.rangeMiles),
+			minPrice: Math.min(bounds.minPrice, car.price),
+			maxPrice: Math.max(bounds.maxPrice, car.price),
+		}),
+		{
+			minRange: cars[0].rangeMiles,
+			maxRange: cars[0].rangeMiles,
+			minPrice: cars[0].price,
+			maxPrice: cars[0].price,
+		}
+	);
+}
+
+function DoubleSliderFilter({
+	id,
+	label,
+	minName,
+	maxName,
+	min,
+	max,
+	minValue,
+	maxValue,
+	formatValue,
+	onChange,
+}) {
+	const range = max - min;
+	const startPercent = range > 0 ? ((minValue - min) / range) * 100 : 0;
+	const endPercent = range > 0 ? ((maxValue - min) / range) * 100 : 100;
+
+	return (
+		<div
+			id={`${id}-filter`}
+			data-testid={`${id}-filter`}
+			className="double-slider-field"
+			style={{
+				"--slider-start": `${startPercent}%`,
+				"--slider-end": `${endPercent}%`,
+			}}
+		>
+			<div className="double-slider-summary">
+				<span id={`${id}-filter-label`} data-testid={`${id}-filter-label`}>
+					{label}
+				</span>
+				<strong id={`${id}-filter-value`} data-testid={`${id}-filter-value`}>
+					{formatValue(minValue)} - {formatValue(maxValue)}
+				</strong>
+			</div>
+			<div className="double-slider-control">
+				<div className="double-slider-track" aria-hidden="true" />
+				<input
+					id={`${id}-min-filter-input`}
+					data-testid={`${id}-min-filter-input`}
+					className="double-slider-input double-slider-input-min"
+					name={minName}
+					type="range"
+					min={min}
+					max={max}
+					value={minValue}
+					aria-label={`${label} minimum`}
+					onInput={(e) => onChange(minName, e.target.value)}
+					onChange={(e) => onChange(minName, e.target.value)}
+				/>
+				<input
+					id={`${id}-max-filter-input`}
+					data-testid={`${id}-max-filter-input`}
+					className="double-slider-input double-slider-input-max"
+					name={maxName}
+					type="range"
+					min={min}
+					max={max}
+					value={maxValue}
+					aria-label={`${label} maximum`}
+					onInput={(e) => onChange(maxName, e.target.value)}
+					onChange={(e) => onChange(maxName, e.target.value)}
+				/>
+			</div>
+			<div className="double-slider-limits" aria-hidden="true">
+				<span>{formatValue(min)}</span>
+				<span>{formatValue(max)}</span>
+			</div>
+		</div>
+	);
+}
+
 export default function Cars({ user, setUser, cartCount }) {
 	const [filters, setFilters] = useState(initialFilters);
 	const [cars, setCars] = useState([]);
+	const [catalogBounds, setCatalogBounds] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const requestIdRef = useRef(0);
 
-	const loadCars = useCallback(async (nextFilters) => {
+	const loadCars = useCallback(async (nextFilters, updateBounds = false) => {
+		const requestId = requestIdRef.current + 1;
+		requestIdRef.current = requestId;
 		setLoading(true);
 		setError("");
 
 		try {
 			const token = localStorage.getItem("token");
 			const data = await fetchCars(token, nextFilters);
+
+			if (requestId !== requestIdRef.current) {
+				return;
+			}
+
 			setCars(data);
+
+			if (updateBounds) {
+				setCatalogBounds(getCatalogBounds(data));
+			}
 		} catch (err) {
-			setError(err.message);
+			if (requestId === requestIdRef.current) {
+				setError(err.message);
+			}
 		} finally {
-			setLoading(false);
+			if (requestId === requestIdRef.current) {
+				setLoading(false);
+			}
 		}
 	}, []);
 
 	useEffect(() => {
-		loadCars(initialFilters);
+		loadCars(initialFilters, true);
 	}, [loadCars]);
+
+	useEffect(() => {
+		if (!catalogBounds) {
+			return;
+		}
+
+		loadCars(filters);
+	}, [catalogBounds, filters, loadCars]);
+
+	const sliderValues = useMemo(() => {
+		if (!catalogBounds) {
+			return null;
+		}
+
+		return {
+			minRange:
+				filters.minRange === "" ? catalogBounds.minRange : Number(filters.minRange),
+			maxRange:
+				filters.maxRange === "" ? catalogBounds.maxRange : Number(filters.maxRange),
+			minPrice:
+				filters.minPrice === "" ? catalogBounds.minPrice : Number(filters.minPrice),
+			maxPrice:
+				filters.maxPrice === "" ? catalogBounds.maxPrice : Number(filters.maxPrice),
+		};
+	}, [catalogBounds, filters]);
 
 	function handleChange(e) {
 		setFilters((current) => ({
@@ -50,14 +184,44 @@ export default function Cars({ user, setUser, cartCount }) {
 		}));
 	}
 
-	function handleSubmit(e) {
-		e.preventDefault();
-		loadCars(filters);
+	function handleSliderChange(name, value) {
+		if (!catalogBounds || !sliderValues) {
+			return;
+		}
+
+		const numericValue = Number(value);
+
+		setFilters((current) => {
+			if (name === "minRange") {
+				return {
+					...current,
+					minRange: String(Math.min(numericValue, sliderValues.maxRange)),
+				};
+			}
+
+			if (name === "maxRange") {
+				return {
+					...current,
+					maxRange: String(Math.max(numericValue, sliderValues.minRange)),
+				};
+			}
+
+			if (name === "minPrice") {
+				return {
+					...current,
+					minPrice: String(Math.min(numericValue, sliderValues.maxPrice)),
+				};
+			}
+
+			return {
+				...current,
+				maxPrice: String(Math.max(numericValue, sliderValues.minPrice)),
+			};
+		});
 	}
 
 	function handleReset() {
 		setFilters(initialFilters);
-		loadCars(initialFilters);
 	}
 
 	return (
@@ -81,7 +245,7 @@ export default function Cars({ user, setUser, cartCount }) {
 				id="cars-filter-form"
 				data-testid="cars-filter-form"
 				className="cars-filter-form"
-				onSubmit={handleSubmit}
+				onSubmit={(e) => e.preventDefault()}
 			>
 				<label id="model-filter-label" data-testid="model-filter-label">
 					Model
@@ -95,66 +259,37 @@ export default function Cars({ user, setUser, cartCount }) {
 					/>
 				</label>
 
-				<label id="min-range-filter-label" data-testid="min-range-filter-label">
-					Min range
-					<input
-						id="min-range-filter-input"
-						data-testid="min-range-filter-input"
-						name="minRange"
-						type="number"
-						min="0"
-						placeholder="Miles"
-						value={filters.minRange}
-						onChange={handleChange}
-					/>
-				</label>
+				{catalogBounds && sliderValues && (
+					<>
+						<DoubleSliderFilter
+							id="range"
+							label="Range"
+							minName="minRange"
+							maxName="maxRange"
+							min={catalogBounds.minRange}
+							max={catalogBounds.maxRange}
+							minValue={sliderValues.minRange}
+							maxValue={sliderValues.maxRange}
+							formatValue={(value) => `${value} mi`}
+							onChange={handleSliderChange}
+						/>
 
-				<label id="max-range-filter-label" data-testid="max-range-filter-label">
-					Max range
-					<input
-						id="max-range-filter-input"
-						data-testid="max-range-filter-input"
-						name="maxRange"
-						type="number"
-						min="0"
-						placeholder="Miles"
-						value={filters.maxRange}
-						onChange={handleChange}
-					/>
-				</label>
-
-				<label id="min-price-filter-label" data-testid="min-price-filter-label">
-					Min price
-					<input
-						id="min-price-filter-input"
-						data-testid="min-price-filter-input"
-						name="minPrice"
-						type="number"
-						min="0"
-						placeholder="USD"
-						value={filters.minPrice}
-						onChange={handleChange}
-					/>
-				</label>
-
-				<label id="max-price-filter-label" data-testid="max-price-filter-label">
-					Max price
-					<input
-						id="max-price-filter-input"
-						data-testid="max-price-filter-input"
-						name="maxPrice"
-						type="number"
-						min="0"
-						placeholder="USD"
-						value={filters.maxPrice}
-						onChange={handleChange}
-					/>
-				</label>
+						<DoubleSliderFilter
+							id="price"
+							label="Price"
+							minName="minPrice"
+							maxName="maxPrice"
+							min={catalogBounds.minPrice}
+							max={catalogBounds.maxPrice}
+							minValue={sliderValues.minPrice}
+							maxValue={sliderValues.maxPrice}
+							formatValue={(value) => currencyFormatter.format(value)}
+							onChange={handleSliderChange}
+						/>
+					</>
+				)}
 
 				<div id="cars-filter-actions" data-testid="cars-filter-actions" className="filter-actions">
-					<button id="cars-filter-submit" data-testid="cars-filter-submit" type="submit">
-						Apply
-					</button>
 					<button
 						id="cars-filter-reset"
 						data-testid="cars-filter-reset"
