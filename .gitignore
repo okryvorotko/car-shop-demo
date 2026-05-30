@@ -8,6 +8,13 @@
 
 # Environment/local config
 /frontend/*.local
+.env
+.env.*
+**/.env
+**/.env.*
+/frontend/.env
+/frontend/*.local
+/backend/.env
 
 # Logs
 logs/
