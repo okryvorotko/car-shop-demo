@@ -7,13 +7,7 @@
 /frontend/dist-ssr/
 
 # Environment/local config
-.env
-.env.*
-**/.env
-**/.env.*
-/frontend/.env
 /frontend/*.local
-/backend/.env
 
 # Logs
 logs/
