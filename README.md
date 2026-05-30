@@ -20,6 +20,18 @@ The backend API runs at:
 http://localhost:4000
 ```
 
+Interactive API documentation is available at:
+
+```text
+http://localhost:4000/api-docs
+```
+
+The raw OpenAPI document is available at:
+
+```text
+http://localhost:4000/openapi.json
+```
+
 ## Environment Files
 
 Docker Compose expects these files to exist:

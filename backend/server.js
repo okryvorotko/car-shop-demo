@@ -4,11 +4,26 @@ import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import swaggerUi from "swagger-ui-express";
 import { resetCars, sampleCars, seedCars } from "./carsData.js";
+import { openapiSpec } from "./openapiSpec.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.get("/openapi.json", (req, res) => {
+	res.json(openapiSpec);
+});
+
+app.use(
+	"/api-docs",
+	swaggerUi.serve,
+	swaggerUi.setup(openapiSpec, {
+		explorer: true,
+		customSiteTitle: "Car Shop API Docs",
+	})
+);
 
 let db;
 
