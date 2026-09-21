@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import sqlite3 from "sqlite3";
@@ -33,6 +34,10 @@ app.get("/ping", (req, res) => {
 
 const BE_PORT = Number(process.env.BE_PORT || 4000);
 const SECRET = process.env.JWT_SECRET;
+
+if (!SECRET) {
+	throw new Error("JWT_SECRET is required. Configure it through the environment or backend/.env.");
+}
 
 async function getTokenVersion() {
 	const state = await db.get(
