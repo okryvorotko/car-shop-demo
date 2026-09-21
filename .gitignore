@@ -16,6 +16,9 @@
 /frontend/*.local
 /backend/.env
 
+# Keep safe configuration templates in version control
+!**/.env.example
+
 # Logs
 logs/
 *.log
