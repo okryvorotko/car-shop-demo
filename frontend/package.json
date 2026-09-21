@@ -2,7 +2,11 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "description": "Demo React frontend used by the car-shop automation portfolio.",
   "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",

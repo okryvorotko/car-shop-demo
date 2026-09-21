@@ -1,27 +1,43 @@
-version: "3.9"
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: dockerfile
     ports:
       - "4000:4000"
     environment:
-      - NODE_ENV=development
-    env_file:
-      - ./backend/.env
+      NODE_ENV: development
+      BE_PORT: "${BE_PORT:-4000}"
+      JWT_SECRET: "${JWT_SECRET:-local-development-secret}"
     volumes:
       - ./backend:/app
-      - /app/node_modules  # prevent overwriting node_modules with host empty folder
-    command: npm run dev  # use nodemon for backend auto-reload
+      - /app/node_modules
+    command: npm run dev
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:4000/ping || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
     ports:
       - "3000:5173"
     depends_on:
-      - backend
-    env_file:
-      - ./frontend/.env
+      backend:
+        condition: service_healthy
+    environment:
+      VITE_BE_HOST: "${VITE_BE_HOST:-http://localhost:4000/}"
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: npm run dev  # use vite dev server
+    command: npm run dev
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:5173 || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
